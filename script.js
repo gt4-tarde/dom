@@ -31,6 +31,7 @@ function adicionarTarefa(event) {
 }
 
 function renderizarTarefas() {
+    listaTarefas.textContent = "";
     tarefas.forEach(function (tarefa, indice) {
         const linha = document.createElement("tr");
 
@@ -39,7 +40,6 @@ function renderizarTarefas() {
 
         const colunaNome = document.createElement("td");
         colunaNome.textContent = tarefa.texto;
-
         if (tarefa.concluida) {
             colunaNome.classList.add(
                 "text-decoration-line-through",
@@ -54,9 +54,37 @@ function renderizarTarefas() {
             colunaStatus.innerHTML = '<span class="badge text-bg-warning">Pendente</span>';
         }
 
+        const colunaAcoes = document.createElement("td");
+
+        const botaoConcluir = document.createElement("button");
+        botaoConcluir.textContent = 
+            tarefa.concluida
+                ? "Reabrir"
+                : "Concluir";
+        botaoConcluir.classList.add(
+            "btn",
+            tarefa.concluida
+                ? "btn-warning"
+                : "btn-success",
+            "btn-sm",
+            "me-2"
+        );
+        botaoConcluir.addEventListener(
+            "click",
+            function() {
+                alterarStatus(tarefa.id);
+            }
+        );
+
+        const botaoEditar = document.createElement("button");
+        const botaoExcluir = document.createElement("button");
+
+        colunaAcoes.appendChild(botaoConcluir);
+
         linha.appendChild(colunaNumero);
-        linha.appendChild(colunaNome);
         linha.appendChild(colunaStatus);
+        linha.appendChild(colunaNome);
+        linha.appendChild(colunaAcoes);
 
         listaTarefas.appendChild(linha);
     });
@@ -68,3 +96,15 @@ function salvarTarefa() {
         JSON.stringify(tarefas)
     );
 }
+
+function alterarStatus(id) {
+    tarefas.forEach(function (tarefa) {
+        if (tarefa.id === id) {
+            tarefa.concluida = !tarefa.concluida;
+        }
+    });
+    salvarTarefa();
+    renderizarTarefas();
+}
+
+renderizarTarefas();
