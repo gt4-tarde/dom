@@ -5,7 +5,7 @@ const contador = document.querySelector("#contador");
 const listaTarefas = document.querySelector("#lista-tarefas");
 
 // Resgate de tarefas do localStorage
-const tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 
 // Ouvir e agir sobre o clique 
 form.addEventListener("submit", adicionarTarefa);
@@ -88,7 +88,7 @@ function renderizarTarefas() {
         botaoEditar.addEventListener(
             "click",
             function() {
-                editarTarefa(tarefa.id);
+                editarTarefas(tarefa.id);
             }
         );
 
@@ -103,7 +103,7 @@ function renderizarTarefas() {
         botaoExcluir.addEventListener(
             "click",
             function() {
-                excluirTarefa(tarefa.id);
+                excluirTarefas(tarefa.id);
             }
         );
 
@@ -147,7 +147,7 @@ function atualizarContador() {
     }
 }
 
-function editarTarefa(id) {
+function editarTarefas(id) {
     const tarefa = tarefas.find(function (tarefa) {
         return tarefa.id === id;
     });
@@ -161,7 +161,7 @@ function editarTarefa(id) {
     renderizarTarefas();
 }
 
-function excluirTarefa(id) {
+function excluirTarefas(id) {
     const confirmar = confirm("Tem certeza que deseja excluir a tarefa?");
     if (!confirmar) {
         return;
